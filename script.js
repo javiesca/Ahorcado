@@ -205,6 +205,7 @@ window.onload = function () {
                     if (data.getAttribute("data-letra") == e.key) {
                         data.textContent = e.key.toUpperCase();
                         pintaTeclas(e.key, e.key, verde);
+                        contadorAciertos++;
                     }
 
                     //LO MISMO PERO SI HACEMOS CLICK SOBRE LA LETRA
@@ -213,9 +214,10 @@ window.onload = function () {
                         e.target.style.backgroundColor = "green";
                         e.target.setAttribute("disabled", true);
                         pintaTeclas(e.key, e.key, verde);
+                        contadorAciertos++;
                     }
                 }
-                contadorAciertos++;
+               
             
             //SI LA LETRA QUE PULSAMOS O CLICKAMOS NO ESTA EN LA PALABRA    
             } else {
