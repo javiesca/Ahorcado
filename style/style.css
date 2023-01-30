@@ -40,6 +40,7 @@ canvas {
 .vidas{
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 30px;
   height: 50px;
   background-color: rgb(209, 209, 209);
@@ -57,7 +58,6 @@ canvas {
 }
 
 .vidas img{
-  display: flex;
   height:30px;
 }
 
