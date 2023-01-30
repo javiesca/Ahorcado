@@ -94,7 +94,8 @@ window.onload = function () {
     "Descripcion", "Huevos", "Boligrafo", "Patos", "Clasificacion", "Banda", "Video", "Trabajador", "Pizza", "Oreja", "Organizacion", "Sociedad", "Corcho", "Producto", "Jugo", "Creador", "Mermelada", "Trabajador", "Letras", "Carbon", "Casa", "Giro", "Articulo", "Vehiculo", "Canasta", "Gobernador", "Joya", "Membresia", "Voz", "Republica", "enfasis", "Ardilla", "Agua", "Tasa", "Miedo", "Profesion", "Pasajero"];
 
     
-
+    let verde = "green";
+    let rojo = "red";
 
     let divPalabra = document.querySelector(".palabra");
 
@@ -186,22 +187,29 @@ window.onload = function () {
         let datas = document.querySelectorAll("[data-letra]");
         let vida = document.querySelector(".vidas");
 
-        let verde = "green";
-        let rojo = "red";
-        
-        console.log(e.keyCode);
+        //AL APRETAR INTRO SE REINICIA EL JUEGO
+        if(e.keyCode == 13){
+            document.querySelector(".nuevoJuego").click();
+        }
 
+        //COMPROBACIONES
+
+        //SI TENEMOS VIDAS Y (PULSAMOS SOBRE UNA TECLA DEL TECLADO o EL EVENTO DE TECLADO COINCIDE CON UNA LETRA DEL ALFABETO)
         if (vidas != 0 &&  (e.target.className == "tecla" || ((e.keyCode >=65 && e.keyCode <=90)) || e.keyCode == 192)) {
 
+            //SI EL EVENTO DE TECLADO o EL CLICK COINCIDE CON UNA PALABRA QUE ESTA EN EL DICCIONARIO
             if (palabra.includes(e.key) || (palabra.includes(e.target.textContent))) {
 
+                //RECORREMOS LOS ATRIBUTOS DATA-LETRA DE LA PALABRA
                 for (let data of datas) {
 
+                    //SI LA LETRA QUE PRESIOANMOS COINCIDE CON EL DATA-ATRIBUTE DEL SPAN, PINTA ESA LETRA DENTRO DE LA ETIQUEA
                     if (data.getAttribute("data-letra") == e.key) {
                         data.textContent = e.key.toUpperCase();
                         pintaTeclas(e.key, e.key, verde);
                     }
 
+                    //LO MISMO PERO SI HACEMOS CLICK SOBRE LA LETRA
                     if (data.getAttribute("data-letra") == e.target.textContent) {
                         data.textContent = e.target.textContent.toUpperCase();
                         e.target.style.backgroundColor = "green";
@@ -209,51 +217,64 @@ window.onload = function () {
                         pintaTeclas(e.key, e.key, verde);
                     }
                 }
-
+            
+            //SI LA LETRA QUE PULSAMOS O CLICKAMOS NO ESTA EN LA PALABRA    
             } else {
-
+                //CONTADOR QUE NOS VALE PARA PINTAR EL MONIGOTE
                 contador++;
-                vidas--;
+                //ELIMINAMOS UNA VIDA DE LA PANTALLA
                 vida.removeChild(vida.children[1]);
-                pintaTeclas(e.key, e.key, rojo);
-                if(e.target.className == "tecla"){
-                    e.target.style.backgroundColor = "red";                
-                    e.target.setAttribute("disabled", true);
-                }
+                
+                //FUNCION QUE PINTA TECLAS CASO DE EVENTO TECLADO O RATON
+                pintaTeclas(e.target.textContent, e.target.textContent, rojo);
+                pintaTeclas(e.key, e.key, rojo)
+                
+                //FUNCION QUE PINTA EL MUÑECO
                 pintaMuñeco(contador);
             }
 
         }
+    }
 
+    function pintaMuñeco(contador) {
+        switch (contador) {
+            case 1:
+                draw1();
+                break;
+            case 2:
+                draw2();
+                break;
+            case 3:
+                draw3();
+                break;
+            case 4:
+                draw4();
+                break;
+            case 5:
+                draw5();
+                break;
+            case 6:
+                draw6();
+                break;
+            case 7:
+                draw7();
+                break;
+            case 8:
+                draw8();
+                pintaSolucion();
+                document.querySelector(".vidas").innerHTML = "<h1>GAME OVER</h1>"
+                break;
+            default:
+                break;
+        }
+    }
 
-        function pintaMuñeco(contador) {
-            switch (contador) {
-                case 1:
-                    draw1();
-                    break;
-                case 2:
-                    draw2();
-                    break;
-                case 3:
-                    draw3();
-                    break;
-                case 4:
-                    draw4();
-                    break;
-                case 5:
-                    draw5();
-                    break;
-                case 6:
-                    draw6();
-                    break;
-                case 7:
-                    draw7();
-                    break;
-                case 8:
-                    draw8();
-                    break;
-                default:
-                    break;
+    function pintaSolucion() {
+        let solucion = document.querySelectorAll(".palabra span");
+        for(let letra of solucion){
+            if(letra.textContent == ""){
+                letra.textContent = letra.getAttribute('data-letra').toUpperCase();
+                letra.style.color="red";
             }
         }
     }
