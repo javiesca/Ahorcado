@@ -1,0 +1,151 @@
+@import url("reset.css");
+
+body {
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.canvas_container {
+  margin: 0px auto;
+  margin-top: 20px;
+  width: 530px;
+  position: relative;
+  border: 15px solid #000;
+  box-shadow: 0 0 10px #000;
+  border-radius:30px;
+  background-color: #d1d1d1;
+ 
+}
+
+canvas {
+  width: 500px;
+  height: 250px;
+  border: 2px solid white;
+  background: linear-gradient(190deg, rgba(149,146,146,1) 0%, rgb(123, 148, 129) 48%);
+  border-radius: 15px;
+}
+
+.palabra {
+  margin: 20px auto;
+  width: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.vidas{
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  height: 50px;
+  background-color: rgb(209, 209, 209);
+}
+
+.vidas img{
+  height:30px;
+}
+
+.palabra span {
+  width: 30px;
+  height: 45px;
+  font-size: 40px;
+  border-bottom: 4px solid black;
+}
+
+.teclado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 45%;
+  transform: perspective(500px) rotateX(30deg);
+  margin-top: 160px;
+}
+
+.fila {
+  display: flex;
+}
+
+.tecla {
+  width: 50px;
+  height: 65px;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2px;
+  font-size: 24px;
+  transform: perspective(500px) rotateX(30deg);
+  background-color: rgb(77, 75, 75);
+  color: white;
+}
+
+.tecla:hover{
+  cursor: pointer;
+}
+
+.trapecio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 750px;
+  height: 80px;
+  border-right: 90px solid transparent;
+  border-left: 90px solid transparent;
+  border-bottom: 190px solid #595b5d;
+}
+
+.cuadrado{
+  width:570px;
+  height: 460px;
+  background-color: #3d3e3f;
+  border-radius: 20px 20px 0 0;
+}
+
+@media(max-width:1024px) {
+  .canvas_container{
+    width: 350px;
+    height: 300px;
+  }
+
+  canvas{
+    width:320px;
+    height: 200px;
+  }
+
+  .cuadrado{
+    width:370px;
+    height: 370px;
+  }
+
+  .trapecio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 439px;
+    height: 70px;
+    border-right: 35px solid transparent;
+    border-left: 35px solid transparent;
+    border-bottom: 180px solid #595b5d;
+  }
+
+  .tecla{
+    width:31px
+  }
+
+  .palabra span{
+    width: 20px;
+    font-size: 20px;
+    height: 25px;
+  }
+
+  .palabra{
+    width:90%;
+    margin: 5px;
+
+  }
+}
