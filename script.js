@@ -235,6 +235,7 @@ window.onload = function () {
 
         if(contadorAciertos == palabra.length){
             document.querySelector(".vidas").innerHTML = "<h1>GANASTE!!</h1>";
+            document.querySelector(".nuevoJuego").classList.add("repetir");
         }
     
     }
