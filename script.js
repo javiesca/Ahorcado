@@ -88,14 +88,15 @@ window.onload = function () {
     }
 
 
-
-
     let palabras = ["Filosofia", "Camiones", "Cantante", "Carruaje", "Obligacion", "Silla", "Pais", "Aumento", "Ropa", "Periodico", "Ataque", "Tambor", "Mensaje", "Almeja", "Descripcion", "Economia", "Orientacion", "Realidad", "Color", "Pulimento", "Cirugia", "Partida", "Verano", "Aplastar", "Seleccion", "Bandera", "Cena", "Cuaderno", "Comunicacion", "Bota", "Rueda", "Cuello", "Pantalones", "Cebra", "Caliente", "Cuenca", "Invierno", "Amigo", "Cabra", "Gobernador", "Operacion", "Carcasa", "Confusion", "Entusiasmo", "Solucion", "Tambor", "Unidad", "Intento", "Reparto", "Tos", "Recurso", "Rango", "Contaminacion", "Seleccion", "Rebaño", "Caracoles", "Minuto", "Lienzo", "Papo", "Vacaciones", "Cuerno", "Miel", "Fiesta", "Matrimonio", "Muebles", "Habitacion", "Truco", "Pintura", "Nota", "Silbato", "Biblioteca", "Accion", "Responsabilidad", "Relacion", "Bufanda", "Voz", "Artesano", "Ranas",
     "Descripcion", "Huevos", "Boligrafo", "Patos", "Clasificacion", "Banda", "Video", "Trabajador", "Pizza", "Oreja", "Organizacion", "Sociedad", "Corcho", "Producto", "Jugo", "Creador", "Mermelada", "Trabajador", "Letras", "Carbon", "Casa", "Giro", "Articulo", "Vehiculo", "Canasta", "Gobernador", "Joya", "Membresia", "Voz", "Republica", "enfasis", "Ardilla", "Agua", "Tasa", "Miedo", "Profesion", "Pasajero"];
 
     
     let verde = "green";
     let rojo = "red";
+    let contadorFallos = 0;
+    var contadorAciertos = 0;
+    let vidas = 8;
 
     let divPalabra = document.querySelector(".palabra");
 
@@ -105,15 +106,11 @@ window.onload = function () {
 
     let palabra = palabraAleatoria();
 
+
     pistas(palabra, divPalabra, seleccionaLetra);
 
     document.addEventListener(("keydown"), (e) => compruebaTecla(e, palabra));
     document.addEventListener(("click"), (e) => compruebaTecla(e, palabra));
-
-    
-
-    let contador = 0;
-    let vidas = 8;
 
 
     //REINICIAR
@@ -145,8 +142,6 @@ window.onload = function () {
     //PINTA 1 o 2 PISTAS EN LA PALABRA SEGÚN SU LONGITUD
     function pistas(palabra, divPalabra, seleccionaLetra) {
 
-        let verde = "green";
-
         for (let i = 0; i < palabra.length; i++) {
             divPalabra.innerHTML += `<span class=l${i} data-letra=${palabra[i]}></span>`;
         }
@@ -160,14 +155,17 @@ window.onload = function () {
 
         if (palabra.length <= 5) {
             document.querySelector(`.l${letra1}`).textContent = palabra[letra1].toLocaleUpperCase();
+            contadorAciertos=eval(contadorAciertos+1);
             pintaTeclas(palabra[letra1], palabra[letra1], verde);
+           
         } else {
             document.querySelector(`.l${letra1}`).textContent = palabra[letra1].toLocaleUpperCase();
             document.querySelector(`.l${letra2}`).textContent = palabra[letra2].toLocaleUpperCase();
+            contadorAciertos=eval(contadorAciertos+2);
             pintaTeclas(palabra[letra1], palabra[letra2], verde);
-
         }
     }
+
 
     function pintaTeclas(letra1, letra2, color){
         let pintaTeclasPista = document.querySelectorAll(".tecla");
@@ -177,7 +175,6 @@ window.onload = function () {
                 pinta.setAttribute("disabled", true);
             }
         }
-
     }
 
 
@@ -191,6 +188,7 @@ window.onload = function () {
         if(e.keyCode == 13){
             document.querySelector(".nuevoJuego").click();
         }
+
 
         //COMPROBACIONES
 
@@ -217,11 +215,12 @@ window.onload = function () {
                         pintaTeclas(e.key, e.key, verde);
                     }
                 }
+                contadorAciertos++;
             
             //SI LA LETRA QUE PULSAMOS O CLICKAMOS NO ESTA EN LA PALABRA    
             } else {
                 //CONTADOR QUE NOS VALE PARA PINTAR EL MONIGOTE
-                contador++;
+                contadorFallos++;
                 //ELIMINAMOS UNA VIDA DE LA PANTALLA
                 vida.removeChild(vida.children[1]);
                 
@@ -230,14 +229,19 @@ window.onload = function () {
                 pintaTeclas(e.key, e.key, rojo)
                 
                 //FUNCION QUE PINTA EL MUÑECO
-                pintaMuñeco(contador);
+                pintaMuñeco(contadorFallos);
             }
-
         }
+
+        if(contadorAciertos == palabra.length){
+            document.querySelector(".vidas").innerHTML = "<h1>GANASTE!!</h1>";
+        }
+    
     }
 
-    function pintaMuñeco(contador) {
-        switch (contador) {
+
+    function pintaMuñeco(contadorFallos) {
+        switch (contadorFallos) {
             case 1:
                 draw1();
                 break;
@@ -262,13 +266,14 @@ window.onload = function () {
             case 8:
                 draw8();
                 pintaSolucion();
-                document.querySelector(".vidas").innerHTML = "<h1>GAME OVER</h1>"
+                document.querySelector(".vidas").innerHTML = "<h1>GAME OVER</h1>";
                 document.querySelector(".nuevoJuego").classList.add("repetir");
                 break;
             default:
                 break;
         }
     }
+
 
     function pintaSolucion() {
         let solucion = document.querySelectorAll(".palabra span");
@@ -279,7 +284,6 @@ window.onload = function () {
             }
         }
     }
-
 
 };
 
