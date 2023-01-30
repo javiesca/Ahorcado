@@ -130,7 +130,6 @@ canvas {
     border-bottom: 0;
     border-left: 0;
     background-color: #555657;
-
   }
 
   .tecla{
@@ -141,6 +140,7 @@ canvas {
   .teclado{
     margin: 0;
     padding: 0;
+    width: 100%;
     transform: none;
   }
 
@@ -160,6 +160,4 @@ canvas {
     height:35px;
     gap: 5px;
   }
-
-
 }
