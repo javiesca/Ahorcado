@@ -114,7 +114,7 @@ canvas {
 
   canvas{
     width:320px;
-    height: 200px;
+    height: 190px;
   }
 
   .cuadrado{
@@ -134,18 +134,22 @@ canvas {
   }
 
   .tecla{
-    width:31px
+    width:26px
   }
 
   .palabra span{
     width: 20px;
     font-size: 20px;
-    height: 25px;
+    height: 26px;
   }
 
   .palabra{
     width:90%;
     margin: 5px;
+    height: auto;
+  }
 
+  .vidas{
+    height:35px;
   }
 }
