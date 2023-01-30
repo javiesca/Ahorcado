@@ -1,8 +1,8 @@
 @import url("reset.css");
 
 body {
-  text-align: center;
   font-family: "Montserrat", sans-serif;
+  background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -107,6 +107,7 @@ canvas {
 }
 
 @media(max-width:1024px) {
+
   .canvas_container{
     width: 350px;
     height: 300px;
@@ -115,26 +116,33 @@ canvas {
   canvas{
     width:320px;
     height: 190px;
+
   }
 
   .cuadrado{
     width:370px;
-    height: 370px;
+    height: 340px;
   }
 
   .trapecio {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 439px;
-    height: 70px;
-    border-right: 35px solid transparent;
-    border-left: 35px solid transparent;
-    border-bottom: 180px solid #595b5d;
+    width: 370px;
+    height: 250px;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    background-color: #555657;
+
   }
 
   .tecla{
-    width:26px
+    width:32px;
+    transform: none;
+  }
+
+  .teclado{
+    margin: 0;
+    padding: 0;
+    transform: none;
   }
 
   .palabra span{
