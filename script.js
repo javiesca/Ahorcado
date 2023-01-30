@@ -263,6 +263,7 @@ window.onload = function () {
                 draw8();
                 pintaSolucion();
                 document.querySelector(".vidas").innerHTML = "<h1>GAME OVER</h1>"
+                document.querySelector(".nuevoJuego").classList.add("repetir");
                 break;
             default:
                 break;

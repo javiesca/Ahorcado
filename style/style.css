@@ -118,9 +118,28 @@ canvas {
   border-radius: 20px 20px 0 0;
 }
 
+.repetir {
+  animation: rebote 1s ease 0s infinite normal forwards;
+  background-color: orange;
+}
+
+@keyframes rebote {
+	0% {
+		transform: scale(1);
+	}
+
+	50% {
+		transform: scale(1.1);
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}
 
 
-@media(max-width:500px) {
+
+@media(max-width:750px) {
 
   .canvas_container{
     width: 350px;
