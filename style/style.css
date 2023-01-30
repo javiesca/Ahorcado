@@ -151,5 +151,8 @@ canvas {
 
   .vidas{
     height:35px;
+    gap: 5px;
   }
+
+
 }
