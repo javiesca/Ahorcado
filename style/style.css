@@ -182,4 +182,10 @@ canvas {
     height:35px;
     gap: 5px;
   }
+
+  .vidas h1{
+    font-size: 30px;
+    margin-top: 32px;
+    border-radius: 0 0 10px 10px;
+  }
 }
