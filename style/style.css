@@ -134,9 +134,9 @@ canvas {
 
   .tecla{
     transform: none;
-    font-size: 15px;
+    font-size: 20px;
     padding:0;
-    margin: 0;
+    margin: 1px;
   }
 
   .fila{
@@ -144,8 +144,8 @@ canvas {
   }
 
   .teclado{
-    margin: 0;
-    padding: 0;
+    margin: 2px;
+    padding: 2px;
     width: 100%;
     transform: none;
     padding: 0px 5px;
