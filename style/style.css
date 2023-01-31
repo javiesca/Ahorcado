@@ -73,8 +73,9 @@ canvas {
   flex-direction: column;
   align-items: center;
   width: 45%;
-  transform: perspective(500px) rotateX(30deg);
+  transform: perspective(400px) rotateX(30deg);
   margin-top: 160px;
+  padding-top: 20px;
 }
 
 .fila {
@@ -82,7 +83,7 @@ canvas {
 }
 
 .tecla {
-  width: 50px;
+  width: 55px;
   height: 65px;
   border: 1px solid black;
   display: flex;
@@ -90,9 +91,9 @@ canvas {
   align-items: center;
   margin: 2px;
   font-size: 24px;
-  transform: perspective(500px) rotateX(30deg);
   background-color: rgb(77, 75, 75);
   color: white;
+  padding-top: 10px;
 }
 
 .tecla:hover{
@@ -107,12 +108,13 @@ canvas {
   height: 80px;
   border-right: 90px solid transparent;
   border-left: 90px solid transparent;
-  border-bottom: 190px solid #595b5d;
+  border-bottom: 210px solid #595b5d;
+  border-radius: 0 0 30px 30px;
 }
 
 .cuadrado{
   width:570px;
-  height: 460px;
+  height: 445px;
   background-color: #3d3e3f;
   border-radius: 20px 20px 0 0;
 }
