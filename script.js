@@ -1,4 +1,4 @@
-import {palabras} from "./palabras.js";
+import { palabras } from "./palabras.js";
 
 window.onload = function () {
     const canvas = document.querySelector("canvas");
@@ -16,7 +16,7 @@ window.onload = function () {
         palabra = palabras[Math.round(Math.random() * ((palabras.length - 1) - 0) + 0)];
         return palabra.toLocaleLowerCase();
     }
-    
+
     //SELECCIONA UNA LETRA AL AZAR QUE NO ESTE REPETIDA EN LA PALABRA porejemplo: En PATATA no se podria seleccionar la A ni la T.
     function seleccionaLetra() {
         let letraIndice = 0;
@@ -32,6 +32,7 @@ window.onload = function () {
     let contadorFallos = 0;
     var contadorAciertos = 0;
     let vidas = 8;
+    let teclasPulsadas = [];
 
 
     //REINICIAR JUEGO
@@ -40,7 +41,7 @@ window.onload = function () {
         window.location.reload();
     }
 
-   
+
 
     pintaPistas();
 
@@ -52,7 +53,7 @@ window.onload = function () {
 
         //CONSTRUIMOS DINAMICAMENTE LA PALABRA EN EL HTML Y LE ASIGANMOS LA CLASE l+indice. EJ. l1 - l2 -l3
         for (let i = 0; i < palabra.length; i++) {
-           document.querySelector(".palabra").innerHTML += `<span class=l${i} data-letra=${palabra[i]}></span>`;
+            document.querySelector(".palabra").innerHTML += `<span class=l${i} data-letra=${palabra[i]}></span>`;
         }
 
         // LLAMAMOS A LA FUNCION QUE SELECCIONA LA PRIMERA LETRA
@@ -71,55 +72,54 @@ window.onload = function () {
             //Sumamos 1 acierto al contador
             contadorAciertos = 1;
             pintaTeclas(palabra[letra1], palabra[letra1], verde);
-        
-        // SI LA PALABRA ES MAYOR A 5, SELECCIONAMOS 2 LETRAS DISTINTAS
+
+            // SI LA PALABRA ES MAYOR A 5, SELECCIONAMOS 2 LETRAS DISTINTAS
         } else {
             document.querySelector(`.l${letra1}`).textContent = palabra[letra1].toLocaleUpperCase();
             document.querySelector(`.l${letra2}`).textContent = palabra[letra2].toLocaleUpperCase();
             //sumamos 2 aciertos al contador
-            contadorAciertos=2;
+            contadorAciertos = 2;
             pintaTeclas(palabra[letra1], palabra[letra2], verde);
         }
+
     }
-    
+
 
 
     //FUNCION QUE PINTA TECLAS APRETADAS POR EL USUARIO. RECIBE 2 LETRAS Y UN COLOR (ROJO o VERDE)
-    function pintaTeclas(letra1, letra2, color){
+    function pintaTeclas(letra1, letra2, color) {
         let pintaTeclasPista = document.querySelectorAll(".tecla");
-        for(let pinta of pintaTeclasPista){
-            if(pinta.textContent == letra1 || pinta.textContent == letra2){
+        for (let pinta of pintaTeclasPista) {
+            if (pinta.textContent == letra1 || pinta.textContent == letra2) {
                 pinta.style.backgroundColor = color;
                 pinta.setAttribute("disabled", true);
             }
         }
     }
 
-
+   
 
     function compruebaTecla(e, palabra) {
 
         let datas = document.querySelectorAll("[data-letra]");
         let vida = document.querySelector(".vidas");
+       
 
         //AL APRETAR INTRO SE REINICIA EL JUEGO
-        if(e.keyCode == 13){
+        if (e.keyCode == 13) {
             document.querySelector(".nuevoJuego").click();
         }
-
-
+        
         //COMPROBACIONES
 
-        //SI TENEMOS VIDAS Y (PULSAMOS SOBRE UNA TECLA DEL TECLADO o EL EVENTO DE TECLADO COINCIDE CON UNA LETRA DEL ALFABETO)
-        if (vidas != 0 &&  (e.target.className == "tecla" || ((e.keyCode >=65 && e.keyCode <=90)) || e.keyCode == 192)) {
+        //SI TENEMOS VIDAS Y (PULSAMOS SOBRE UNA TECLA DEL TECLADO o EL EVENTO DE TECLADO COINCIDE CON UNA LETRA DEL ALFABETO) Y LA TECLA QUE ESTAMOS PULSANDO NO HA SIDO YA PULSADA
+        if (vidas != 0 && (e.target.className == "tecla" || ((e.keyCode >= 65 && e.keyCode <= 90)) || e.keyCode == 192) && teclasPulsadas.includes(e.key)==false) {
 
             //SI EL EVENTO DE TECLADO o EL CLICK COINCIDE CON UNA PALABRA QUE ESTA EN EL DICCIONARIO
             if (palabra.includes(e.key) || (palabra.includes(e.target.textContent))) {
 
                 //RECORREMOS LOS ATRIBUTOS DATA-LETRA DE LA PALABRA
                 for (let data of datas) {
-
-                    //SI LA LETRA QUE PRESIOANMOS COINCIDE CON EL DATA-ATRIBUTE DEL SPAN, PINTA ESA LETRA DENTRO DE LA ETIQUEA
                     if (data.getAttribute("data-letra") == e.key) {
                         data.textContent = e.key.toUpperCase();
                         pintaTeclas(e.key, e.key, verde);
@@ -135,38 +135,46 @@ window.onload = function () {
                         contadorAciertos++;
                     }
                 }
-               
-            
-            //SI LA LETRA QUE PULSAMOS O CLICKAMOS NO ESTA EN LA PALABRA    
+
             } else {
                 //CONTADOR QUE NOS VALE PARA PINTAR EL MONIGOTE
                 contadorFallos++;
                 //ELIMINAMOS UNA VIDA DE LA PANTALLA
                 vida.removeChild(vida.children[1]);
-                
+
                 //FUNCION QUE PINTA TECLAS CASO DE EVENTO TECLADO O RATON
                 pintaTeclas(e.target.textContent, e.target.textContent, rojo);
                 pintaTeclas(e.key, e.key, rojo)
-                
+
                 //FUNCION QUE PINTA EL MUÑECO
                 pintaMuñeco(contadorFallos);
             }
         }
 
-        if(contadorAciertos == palabra.length){
+            //AGREGAMOS LA TECLA PULSADA A UN ARRAY DE LETRAS QUE NOS SIRVE PARA COMPROBAR LAS TECLAS QUE HAN SIDO PULSADAS.
+            //TRATAMOS QUE SEA DIFERENTE A undefined PORQUE LAS PULSACIONES DE TECLADO LAS INTRODUCE ASÍ Y NO NOS DEJABA REPETIR LA PULSACION DE RATON
+            if(e.key != undefined){
+                teclasPulsadas.push(e.key);
+            }
+       
+      
+
+        if (contadorAciertos >= palabra.length) {
             document.querySelector(".vidas").innerHTML = "<h1>GANASTE!!</h1>";
             document.querySelector(".nuevoJuego").classList.add("repetir");
         }
     }
 
 
+
+
     //CUANDO PIERDES, PINTA LAS LETRAS QUE EL USUARIO NO ACERTÓ
     function pintaSolucion() {
         let solucion = document.querySelectorAll(".palabra span");
-        for(let letra of solucion){
-            if(letra.textContent == ""){
+        for (let letra of solucion) {
+            if (letra.textContent == "") {
                 letra.textContent = letra.getAttribute('data-letra').toUpperCase();
-                letra.style.color="red";
+                letra.style.color = "red";
             }
         }
     }
