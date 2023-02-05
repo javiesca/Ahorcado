@@ -1,3 +1,4 @@
+//Importamos un array de palabras desde otro archivo .js
 import { palabras } from "./palabras.js";
 
 window.onload = function () {
@@ -6,18 +7,19 @@ window.onload = function () {
 
     canvas.addEventListener("click", muestraPosicion);
 
+    //Función utilizada para situarnos en el canvas y pintar los trazos.
     function muestraPosicion(e) {
         console.log(e.offsetX, e.offsetY);
     }
 
-    //SELECCIONA UNA PLABRA AL AZAR
+    //Función que nos selecciona aleatoriamente una palabra
     function palabraAleatoria() {
         let palabra;
         palabra = palabras[Math.round(Math.random() * ((palabras.length - 1) - 0) + 0)];
         return palabra.toLocaleLowerCase();
     }
 
-    //SELECCIONA UNA LETRA AL AZAR QUE NO ESTE REPETIDA EN LA PALABRA porejemplo: En PATATA no se podria seleccionar la A ni la T.
+    //Selecciona aleatoriamente una letra de esa palabra. porejemplo: En PATATA no se podria seleccionar la A ni la T.
     function seleccionaLetra() {
         let letraIndice = 0;
         do {
@@ -32,11 +34,16 @@ window.onload = function () {
     let contadorFallos = 0;
     var contadorAciertos = 0;
     let vidas = 8;
+    //Array donde guardamos las teclas ya pulsadas(teclado). Agregamos también las pistas que nos de al comienzo.
+    //Con esto hacemos una cuenta correcta de aciertos y fallos.
     let teclasPulsadas = [];
+    let letra1 = 0;
+    let letra2 = 0;
 
 
-    //REINICIAR JUEGO
+    //Tecla de reiniciar juego
     document.querySelector(".nuevoJuego").addEventListener("click", startGame);
+
     function startGame() {
         window.location.reload();
     }
@@ -45,48 +52,54 @@ window.onload = function () {
 
     pintaPistas();
 
+    //Addeventlisterners para usar el teclado o seleccionar una letra en el teclado de la pantalla.
     document.addEventListener(("keydown"), (e) => compruebaTecla(e, palabra));
     document.addEventListener(("click"), (e) => compruebaTecla(e, palabra));
 
-    //PINTA 1 o 2 PISTAS EN LA PALABRA SEGÚN SU LONGITUD
+    //Función que nos pinta dinamicante pistas en la palabra según son
     function pintaPistas() {
 
-        //CONSTRUIMOS DINAMICAMENTE LA PALABRA EN EL HTML Y LE ASIGANMOS LA CLASE l+indice. EJ. l1 - l2 -l3
+        //Pintamos las pistas con la longitud de la paabra. Ponemos la clase l+posicion en el indice y un DATA-ATTRIBUTE con la letra que le corresponderia en la posicion.
         for (let i = 0; i < palabra.length; i++) {
             document.querySelector(".palabra").innerHTML += `<span class=l${i} data-letra=${palabra[i]}></span>`;
         }
 
-        // LLAMAMOS A LA FUNCION QUE SELECCIONA LA PRIMERA LETRA
-        let letra1 = seleccionaLetra();
+        // Asignamos a la variable letra1 un valor que nos da la función selecionaLetra
+        letra1 = seleccionaLetra();
+        //Inicializamos variable letra2
+        letra2;
 
-        //COMPROBAMOS QUE LA SEGUNDA LETRA NO ES IGUAL A LA PRIMERA Y LA ASIGANMOS
-        let letra2;
+        //Con este do / while conseguimos que la letra 1 o y la letra 2 no sean iguales.
         do {
             letra2 = seleccionaLetra(palabra);
         } while (letra1 === letra2);
 
 
-        //SI LA PALABRA ES IGUAL O MENOR A 5 LETRAS NOS DA UNA PISTA
+        //Si la palabra es igual o menor que 5 letras. 1 PISTA
         if (palabra.length <= 5) {
             document.querySelector(`.l${letra1}`).textContent = palabra[letra1].toLocaleUpperCase();
             //Sumamos 1 acierto al contador
             contadorAciertos = 1;
             pintaTeclas(palabra[letra1], palabra[letra1], verde);
 
-            // SI LA PALABRA ES MAYOR A 5, SELECCIONAMOS 2 LETRAS DISTINTAS
+            //Agregamos la pista al array de teclas ya pulsadas.
+            teclasPulsadas.push(palabra[letra1]);
+
+            //Si la palabra es mayor que 5 letras. 2 PISTAS
         } else {
             document.querySelector(`.l${letra1}`).textContent = palabra[letra1].toLocaleUpperCase();
             document.querySelector(`.l${letra2}`).textContent = palabra[letra2].toLocaleUpperCase();
             //sumamos 2 aciertos al contador
             contadorAciertos = 2;
             pintaTeclas(palabra[letra1], palabra[letra2], verde);
-        }
+            //Agregamos las 2 pistas al array de teclas ya pulsadas.
+            teclasPulsadas.push(palabra[letra1]);
+            teclasPulsadas.push(palabra[letra2]);
 
+        }
     }
 
-
-
-    //FUNCION QUE PINTA TECLAS APRETADAS POR EL USUARIO. RECIBE 2 LETRAS Y UN COLOR (ROJO o VERDE)
+    //Función que pinta las letras o teclas apretadas por el usuario. Recibe 2 letras y un color. (ROJO(fallada) o VERDE(acertada))
     function pintaTeclas(letra1, letra2, color) {
         let pintaTeclasPista = document.querySelectorAll(".tecla");
         for (let pinta of pintaTeclasPista) {
@@ -100,12 +113,10 @@ window.onload = function () {
    
 
     function compruebaTecla(e, palabra) {
-
         let datas = document.querySelectorAll("[data-letra]");
         let vida = document.querySelector(".vidas");
        
-
-        //AL APRETAR INTRO SE REINICIA EL JUEGO
+        //El juego se reincia haciendo click en la tecla repetir o presionando la tecla intro.
         if (e.keyCode == 13) {
             document.querySelector(".nuevoJuego").click();
         }
@@ -137,16 +148,16 @@ window.onload = function () {
                 }
 
             } else {
-                //CONTADOR QUE NOS VALE PARA PINTAR EL MONIGOTE
+                //Contador que usamos para pintar el monigote.
                 contadorFallos++;
-                //ELIMINAMOS UNA VIDA DE LA PANTALLA
+                //Eliminamos un corazon cada vez que el usuario falle.
                 vida.removeChild(vida.children[1]);
 
-                //FUNCION QUE PINTA TECLAS CASO DE EVENTO TECLADO O RATON
+                //Llamamos a lal función que pinta teclas usadas por el usuario. (RATON / TECLADO)
                 pintaTeclas(e.target.textContent, e.target.textContent, rojo);
                 pintaTeclas(e.key, e.key, rojo)
 
-                //FUNCION QUE PINTA EL MUÑECO
+                //Función que pinta el monigote
                 pintaMuñeco(contadorFallos);
             }
         }
@@ -156,19 +167,17 @@ window.onload = function () {
             if(e.key != undefined){
                 teclasPulsadas.push(e.key);
             }
-       
-      
 
         if (contadorAciertos >= palabra.length) {
             document.querySelector(".vidas").innerHTML = "<h1>GANASTE!!</h1>";
             document.querySelector(".nuevoJuego").classList.add("repetir");
         }
+
+        console.log(contadorAciertos);
     }
 
 
-
-
-    //CUANDO PIERDES, PINTA LAS LETRAS QUE EL USUARIO NO ACERTÓ
+    //Cuando pierdes. Se pinta la solución con las letras no acertadas
     function pintaSolucion() {
         let solucion = document.querySelectorAll(".palabra span");
         for (let letra of solucion) {
